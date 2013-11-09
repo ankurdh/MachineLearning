@@ -1,0 +1,233 @@
+Reading training data...
+Finished reading traning data... Randomizing before constructing learners..
+Creating chunks for 5-stage cross validation
+Iteration 1 of 5 stage cross validation
+	Removing top 10 occuring words
+	===================================================================================================
+	Total Proper Classifications: 1065 Total Improper Classifications: 49
+	Total True Positives Rate: 21.91% Total False Positives Rate: 1.05% 
+
+	Accuracy: 95.60% Error: 1.10% 
+	Specifity: 65.19% Sensitivity: 99.80%
+	Recall: 99.80%, Precision: 95.41%
+	===================================================================================================
+	Removing top 25 occuring words
+	===================================================================================================
+	Total Proper Classifications: 1074 Total Improper Classifications: 40
+	Total True Positives Rate: 21.86% Total False Positives Rate: 0.81% 
+
+	Accuracy: 96.41% Error: 0.90% 
+	Specifity: 73.33% Sensitivity: 99.59%
+	Recall: 99.59%, Precision: 96.44%
+	===================================================================================================
+	Removing top 50 occuring words
+	===================================================================================================
+	Total Proper Classifications: 1080 Total Improper Classifications: 34
+	Total True Positives Rate: 21.84% Total False Positives Rate: 0.65% 
+
+	Accuracy: 96.95% Error: 0.76% 
+	Specifity: 78.52% Sensitivity: 99.49%
+	Recall: 99.49%, Precision: 97.11%
+	===================================================================================================
+	Removing top 100 occuring words
+	===================================================================================================
+	Total Proper Classifications: 1076 Total Improper Classifications: 38
+	Total True Positives Rate: 21.79% Total False Positives Rate: 0.70% 
+
+	Accuracy: 96.59% Error: 0.85% 
+	Specifity: 77.04% Sensitivity: 99.28%
+	Recall: 99.28%, Precision: 96.91%
+	===================================================================================================
+	Removing top 500 occuring words
+	===================================================================================================
+	Total Proper Classifications: 1082 Total Improper Classifications: 32
+	Total True Positives Rate: 21.73% Total False Positives Rate: 0.49% 
+
+	Accuracy: 97.13% Error: 0.72% 
+	Specifity: 83.70% Sensitivity: 98.98%
+	Recall: 98.98%, Precision: 97.78%
+	===================================================================================================
+Iteration 2 of 5 stage cross validation
+	Removing top 10 occuring words
+	===================================================================================================
+	Total Proper Classifications: 1071 Total Improper Classifications: 44
+	Total True Positives Rate: 22.02% Total False Positives Rate: 0.99% 
+
+	Accuracy: 96.05% Error: 0.99% 
+	Specifity: 66.92% Sensitivity: 100.00%
+	Recall: 100.00%, Precision: 95.71%
+	===================================================================================================
+	Removing top 25 occuring words
+	===================================================================================================
+	Total Proper Classifications: 1087 Total Improper Classifications: 28
+	Total True Positives Rate: 22.00% Total False Positives Rate: 0.61% 
+
+	Accuracy: 97.49% Error: 0.63% 
+	Specifity: 79.70% Sensitivity: 99.90%
+	Recall: 99.90%, Precision: 97.32%
+	===================================================================================================
+	Removing top 50 occuring words
+	===================================================================================================
+	Total Proper Classifications: 1090 Total Improper Classifications: 25
+	Total True Positives Rate: 21.98% Total False Positives Rate: 0.52% 
+
+	Accuracy: 97.76% Error: 0.56% 
+	Specifity: 82.71% Sensitivity: 99.80%
+	Recall: 99.80%, Precision: 97.71%
+	===================================================================================================
+	Removing top 100 occuring words
+	===================================================================================================
+	Total Proper Classifications: 1084 Total Improper Classifications: 31
+	Total True Positives Rate: 21.84% Total False Positives Rate: 0.52% 
+
+	Accuracy: 97.22% Error: 0.70% 
+	Specifity: 82.71% Sensitivity: 99.19%
+	Recall: 99.19%, Precision: 97.69%
+	===================================================================================================
+	Removing top 500 occuring words
+	===================================================================================================
+	Total Proper Classifications: 1077 Total Improper Classifications: 38
+	Total True Positives Rate: 21.66% Total False Positives Rate: 0.49% 
+
+	Accuracy: 96.59% Error: 0.85% 
+	Specifity: 83.46% Sensitivity: 98.37%
+	Recall: 98.37%, Precision: 97.77%
+	===================================================================================================
+Iteration 3 of 5 stage cross validation
+	Removing top 10 occuring words
+	===================================================================================================
+	Total Proper Classifications: 1075 Total Improper Classifications: 40
+	Total True Positives Rate: 21.55% Total False Positives Rate: 0.87% 
+
+	Accuracy: 96.41% Error: 0.90% 
+	Specifity: 74.51% Sensitivity: 99.90%
+	Recall: 99.90%, Precision: 96.10%
+	===================================================================================================
+	Removing top 25 occuring words
+	===================================================================================================
+	Total Proper Classifications: 1089 Total Improper Classifications: 26
+	Total True Positives Rate: 21.53% Total False Positives Rate: 0.54% 
+
+	Accuracy: 97.67% Error: 0.58% 
+	Specifity: 84.31% Sensitivity: 99.79%
+	Recall: 99.79%, Precision: 97.56%
+	===================================================================================================
+	Removing top 50 occuring words
+	===================================================================================================
+	Total Proper Classifications: 1085 Total Improper Classifications: 30
+	Total True Positives Rate: 21.37% Total False Positives Rate: 0.47% 
+
+	Accuracy: 97.31% Error: 0.67% 
+	Specifity: 86.27% Sensitivity: 99.06%
+	Recall: 99.06%, Precision: 97.84%
+	===================================================================================================
+	Removing top 100 occuring words
+	===================================================================================================
+	Total Proper Classifications: 1083 Total Improper Classifications: 32
+	Total True Positives Rate: 21.28% Total False Positives Rate: 0.43% 
+
+	Accuracy: 97.13% Error: 0.72% 
+	Specifity: 87.58% Sensitivity: 98.65%
+	Recall: 98.65%, Precision: 98.04%
+	===================================================================================================
+	Removing top 500 occuring words
+	===================================================================================================
+	Total Proper Classifications: 1082 Total Improper Classifications: 33
+	Total True Positives Rate: 21.24% Total False Positives Rate: 0.40% 
+
+	Accuracy: 97.04% Error: 0.74% 
+	Specifity: 88.24% Sensitivity: 98.44%
+	Recall: 98.44%, Precision: 98.13%
+	===================================================================================================
+Iteration 4 of 5 stage cross validation
+	Removing top 10 occuring words
+	===================================================================================================
+	Total Proper Classifications: 1052 Total Improper Classifications: 63
+	Total True Positives Rate: 21.28% Total False Positives Rate: 1.39% 
+
+	Accuracy: 94.35% Error: 1.41% 
+	Specifity: 62.42% Sensitivity: 99.89%
+	Recall: 99.89%, Precision: 93.87%
+	===================================================================================================
+	Removing top 25 occuring words
+	===================================================================================================
+	Total Proper Classifications: 1070 Total Improper Classifications: 45
+	Total True Positives Rate: 21.28% Total False Positives Rate: 0.99% 
+
+	Accuracy: 95.96% Error: 1.01% 
+	Specifity: 73.33% Sensitivity: 99.89%
+	Recall: 99.89%, Precision: 95.57%
+	===================================================================================================
+	Removing top 50 occuring words
+	===================================================================================================
+	Total Proper Classifications: 1082 Total Improper Classifications: 33
+	Total True Positives Rate: 21.26% Total False Positives Rate: 0.70% 
+
+	Accuracy: 97.04% Error: 0.74% 
+	Specifity: 81.21% Sensitivity: 99.79%
+	Recall: 99.79%, Precision: 96.83%
+	===================================================================================================
+	Removing top 100 occuring words
+	===================================================================================================
+	Total Proper Classifications: 1079 Total Improper Classifications: 36
+	Total True Positives Rate: 21.15% Total False Positives Rate: 0.65% 
+
+	Accuracy: 96.77% Error: 0.81% 
+	Specifity: 82.42% Sensitivity: 99.26%
+	Recall: 99.26%, Precision: 97.02%
+	===================================================================================================
+	Removing top 500 occuring words
+	===================================================================================================
+	Total Proper Classifications: 1078 Total Improper Classifications: 37
+	Total True Positives Rate: 20.95% Total False Positives Rate: 0.47% 
+
+	Accuracy: 96.68% Error: 0.83% 
+	Specifity: 87.27% Sensitivity: 98.32%
+	Recall: 98.32%, Precision: 97.80%
+	===================================================================================================
+Iteration 5 of 5 stage cross validation
+	Removing top 10 occuring words
+	===================================================================================================
+	Total Proper Classifications: 1062 Total Improper Classifications: 53
+	Total True Positives Rate: 21.33% Total False Positives Rate: 1.12% 
+
+	Accuracy: 95.25% Error: 1.19% 
+	Specifity: 68.94% Sensitivity: 99.69%
+	Recall: 99.69%, Precision: 95.00%
+	===================================================================================================
+	Removing top 25 occuring words
+	===================================================================================================
+	Total Proper Classifications: 1071 Total Improper Classifications: 44
+	Total True Positives Rate: 21.31% Total False Positives Rate: 0.90% 
+
+	Accuracy: 96.05% Error: 0.99% 
+	Specifity: 75.16% Sensitivity: 99.58%
+	Recall: 99.58%, Precision: 95.96%
+	===================================================================================================
+	Removing top 50 occuring words
+	===================================================================================================
+	Total Proper Classifications: 1078 Total Improper Classifications: 37
+	Total True Positives Rate: 21.24% Total False Positives Rate: 0.67% 
+
+	Accuracy: 96.68% Error: 0.83% 
+	Specifity: 81.37% Sensitivity: 99.27%
+	Recall: 99.27%, Precision: 96.93%
+	===================================================================================================
+	Removing top 100 occuring words
+	===================================================================================================
+	Total Proper Classifications: 1074 Total Improper Classifications: 41
+	Total True Positives Rate: 21.06% Total False Positives Rate: 0.58% 
+
+	Accuracy: 96.32% Error: 0.92% 
+	Specifity: 83.85% Sensitivity: 98.43%
+	Recall: 98.43%, Precision: 97.31%
+	===================================================================================================
+	Removing top 500 occuring words
+	===================================================================================================
+	Total Proper Classifications: 1064 Total Improper Classifications: 51
+	Total True Positives Rate: 20.97% Total False Positives Rate: 0.72% 
+
+	Accuracy: 95.43% Error: 1.14% 
+	Specifity: 80.12% Sensitivity: 98.01%
+	Recall: 98.01%, Precision: 96.69%
+	===================================================================================================

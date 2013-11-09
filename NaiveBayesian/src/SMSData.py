@@ -3,10 +3,25 @@ Created on Sep 27, 2013
 
 @author: Ankur
 '''
-import re
+import string
 
 SPAM = 0
 HAM = 1
+
+abbrReplacements = {
+                " y ": " why ",
+                " d ": " the ",
+                " n ": " and ",
+                " u ": " you ",
+                " c ": " see ",
+                " tho ": " though ",
+                " k ": " ok ", 
+                " okay ": " ok ",
+                " pls ": " please ",
+                " ur ": " your ",
+                " nd ": " and ",
+                " r ": " are "
+                }
 
 class AttributeCountsAndProbabilites:
         
@@ -62,10 +77,13 @@ class SMSData:
             self.hypClass = HAM
         
         #cleanup some stuff from sms body
-        smsLineBreakup[1] = smsLineBreakup[1].lower()
-        smsLineBreakup[1] = smsLineBreakup[1].strip()
-        smsLineBreakup[1] = re.sub('(){}\[\]",!?-*', '', smsLineBreakup[1])
-        smsLineBreakup[1] = smsLineBreakup[1].replace('.', '')
+        smsLineBreakup[1] = smsLineBreakup[1].lower()                       #make all lower case
+        smsLineBreakup[1] = smsLineBreakup[1].strip()                       #remove all new lines and trailing spaces
+        smsLineBreakup[1] = smsLineBreakup[1].translate(string.maketrans("", ""), string.punctuation)  #replace all punctuation marks.
+        
+        #replace abbrevations
+        for i, j in abbrReplacements.iteritems():
+            smsLineBreakup[1] = smsLineBreakup[1].replace(i, j)
         
         self.attributes = smsLineBreakup[1].split(" ")
 

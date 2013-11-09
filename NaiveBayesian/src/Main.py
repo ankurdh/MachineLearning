@@ -7,6 +7,7 @@ from SMSData import SMSData, AttributeCountsAndProbabilites, SPAM, HAM
 from random import shuffle
 import heapq
 import math
+import random
 
 properClassifications = 0
 improperClassifications = 0
@@ -51,7 +52,8 @@ def init():
         indexArray.append(i);
         
     # shuffle the smsData to ensure random chunks are generated.
-    shuffle(smsData)
+    r = random.seed(3243234)
+    shuffle(smsData, r)
     
 def trainNaiveBayes(chunks, validationChunkIndex):
     
@@ -94,7 +96,6 @@ def trainNaiveBayes(chunks, validationChunkIndex):
                     attributeData.append(entry)
                     
                 vocabularyCount += 1
-#        print "Total SMS evaluated in this chunk: %d" %counter
         totalTrainingDataCount += counter
         
     # print "Total words read: %d\n" % vocabularyCount

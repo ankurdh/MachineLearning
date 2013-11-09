@@ -1,0 +1,48 @@
+Reading training data...
+Finished reading traning data... Randomizing before constructing learners..
+Creating chunks for 5-stage cross validation
+Iteration 1 of 5 stage cross validation
+===============================================================================
+Total Proper Classifications: 1057 Total Improper Classifications: 57
+Total True Positives Rate: 21.93% Total False Positives Rate: 1.23% 
+
+Accuracy: 94.88% Error: 1.28% 
+Specifity: 58.96% Sensitivity: 99.80%
+Recall: 99.80%, Precision: 94.68%
+===============================================================================
+Iteration 2 of 5 stage cross validation
+===============================================================================
+Total Proper Classifications: 1054 Total Improper Classifications: 61
+Total True Positives Rate: 21.37% Total False Positives Rate: 1.35% 
+
+Accuracy: 94.53% Error: 1.37% 
+Specifity: 62.73% Sensitivity: 99.90%
+Recall: 99.90%, Precision: 94.08%
+===============================================================================
+Iteration 3 of 5 stage cross validation
+===============================================================================
+Total Proper Classifications: 1063 Total Improper Classifications: 52
+Total True Positives Rate: 21.66% Total False Positives Rate: 1.17% 
+
+Accuracy: 95.34% Error: 1.17% 
+Specifity: 65.10% Sensitivity: 100.00%
+Recall: 100.00%, Precision: 94.89%
+===============================================================================
+Iteration 4 of 5 stage cross validation
+===============================================================================
+Total Proper Classifications: 1041 Total Improper Classifications: 74
+Total True Positives Rate: 21.51% Total False Positives Rate: 1.64% 
+
+Accuracy: 93.36% Error: 1.66% 
+Specifity: 52.90% Sensitivity: 99.90%
+Recall: 99.90%, Precision: 92.93%
+===============================================================================
+Iteration 5 of 5 stage cross validation
+===============================================================================
+Total Proper Classifications: 1047 Total Improper Classifications: 68
+Total True Positives Rate: 21.66% Total False Positives Rate: 1.50% 
+
+Accuracy: 93.90% Error: 1.53% 
+Specifity: 54.73% Sensitivity: 99.90%
+Recall: 99.90%, Precision: 93.51%
+===============================================================================
