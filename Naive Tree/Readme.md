@@ -16,7 +16,7 @@ which is the probability of the class 'Ci' given all the conditions of the paren
 	P(Ci | Xp, X) = P(Ci | X)P(X| Ci)/SUM_OVER_ALL_CLASSES(P(Ci| Xp)P(X|Ci))
 
 where, Xp is the set of attribute conditions in the parents, X is the current attribute and C is the set of classes. Now, the term P(X | C) can be pre-computed before the algorithm of construction begins and saved for instant access when required. This is known as the Independent Information Gain{IIG} and is the core idea of the fast construction. C4.5 takes up a time of O(n) in this operation that makes its overall complexity O(mn2). With this assumption, the "Naive Tree" Algorithm based on the conditional independence assumption is as follows:
-------------------------------------------------------------------------------------------
+
 Algorithm NT(π,S)
 Input : π is a set of candidate attributes, and
 S is a set of labeled instances
