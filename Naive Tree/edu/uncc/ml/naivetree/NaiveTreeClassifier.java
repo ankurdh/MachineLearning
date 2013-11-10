@@ -2,10 +2,13 @@ package edu.uncc.ml.naivetree;
 
 import weka.classifiers.trees.j48.ClassifierTree;
 import weka.core.Instances;
+import edu.uncc.ml.naivetree.attributes.AttributeHelper;
+import edu.uncc.ml.naivetree.attributes.DataAttribute;
 
 public class NaiveTreeClassifier extends ClassifierTree {
 
 	private static final long serialVersionUID = 1L;
+	private DataAttribute [] attributes;
 
 	public NaiveTreeClassifier() {
 		super(null);
@@ -13,8 +16,6 @@ public class NaiveTreeClassifier extends ClassifierTree {
 
 	@Override
 	public void buildClassifier(Instances data) throws Exception {
-		super.buildClassifier(data);
-		
 		/**
 		 * Following the guidelines to building a custom classifier: 
 		 * http://weka.wikispaces.com/file/view/Build_classifier_353.pdf/82916711/Build_classifier_353.pdf
@@ -23,7 +24,7 @@ public class NaiveTreeClassifier extends ClassifierTree {
 		data.deleteWithMissingClass();
 		
 		/**
-		 * This method initializes the attributes. Populates the 
+		 * This method initializes the attributes. Populates the required tables before the tree construction according to the paper. 
 		 */
 		initializeAttributes(data);
 		
@@ -32,12 +33,12 @@ public class NaiveTreeClassifier extends ClassifierTree {
 	}
 	
 	private void initializeAttributes(Instances instances){
-		//TODO implement this.
+		attributes = AttributeHelper.initializeAttributes(instances, attributes);
 	}
 	
 	@Override
 	public void buildTree(Instances data, boolean arg1) throws Exception {
-		super.buildTree(data, arg1);
+		throw new Exception("Not implemented yet");
 	}
 	
 }

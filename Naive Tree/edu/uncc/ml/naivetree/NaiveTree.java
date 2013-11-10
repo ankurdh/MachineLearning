@@ -15,13 +15,10 @@ public class NaiveTree extends Classifier {
 	public void buildClassifier(Instances instances) throws Exception {
 		naiveTree = new NaiveTreeClassifier();
 		naiveTree.buildClassifier(instances);
-		
 	}
 	
 	@Override
 	public double classifyInstance(Instance instance) throws Exception {
 	    return naiveTree.classifyInstance(instance);
-	  }
-	
-	
+	}
 }

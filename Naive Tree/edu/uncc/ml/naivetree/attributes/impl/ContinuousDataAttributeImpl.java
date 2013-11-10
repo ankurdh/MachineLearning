@@ -83,6 +83,18 @@ public class ContinuousDataAttributeImpl extends AbstractDataAttribute implement
 		return index;
 	}
 
+	/**
+	 * The algorithm used to bin continuous data attribute values is: Equal Widths: 
+	 * Algorithm Outline:
+	 * 
+	 * The algorithm divides the data into k intervals of equal size. The width of intervals is:
+	 * 		w = (max-min)/k 
+	 * 		And the interval boundaries are: min+w, min+2w, ... , min+(k-1)w
+	 * 
+	 * @param data
+	 * @param attributeIndex
+	 * @param bins
+	 */
 	private void setupCutPointsByEqualWidths(Instances data, int attributeIndex, int bins){
 		double maximum = 0;
 		double minimum = 1;

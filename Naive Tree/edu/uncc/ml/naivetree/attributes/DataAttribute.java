@@ -27,6 +27,10 @@ public interface DataAttribute {
 	 * This method must calculate the <code>Independent Information Gain</code> for the given attribute 
 	 * using the formulae [(2) & (5)] defined in the paper
 	 * 
+	 * The Entropy IIG formula to be implemented is:
+	 * ----------------------------------------------------------------------------------------------------------------------------------------------
+	 * 								IIG(S, X) = Entropy(S) - SUM_OVER_ALL_ATTRIBUTE_VALUES [|Sx|/|S| * Entropy(Sx)]
+	 * ----------------------------------------------------------------------------------------------------------------------------------------------
 	 * @param dataEntropy Overall entropy of the dataset
 	 * @param classPriors priors of each of the classes
 	 * @return Independent Information Gain of the current attribute
