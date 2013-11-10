@@ -1,7 +1,6 @@
-Project Outline
-----------------------------------------------------------------
 Decision trees are a widely used data structure. This has brought a keen interest in scaling up the decision tree algorithm for faster construction. This algorithm targets the datasets in which the "Attribute Independence" assumption can be made. With this assumption the overall complexity of the construction of the decision tree can be brought down to O(mn) compared to O(mn2) of C4.5. However, this will require an additional space linear in 'n', where n-> no. of attributes and m-> number of training examples.
-----------------------------------------------------------------
+
+
 Approach
 ----------------------------------------------------------------
 Consider the Information Gain formula:
