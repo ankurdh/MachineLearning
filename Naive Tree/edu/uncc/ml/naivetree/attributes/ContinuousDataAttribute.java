@@ -16,6 +16,6 @@ public interface ContinuousDataAttribute extends DataAttribute {
 	 * @param attributeIndex the index of the numeric attribute that is under consideration 
 	 * @return a <code>Distrubution</code> of thresholds for bins of numeric attribute bags
 	 */
-	Distribution calculateCutPointsForBins(Instances instances, int attributeIndex, int bin);
+	Distribution getDistsributionFor(Instances instances, int attributeIndex, int bin);
 	
 }

@@ -1,5 +1,6 @@
 package edu.uncc.ml.naivetree.attributes;
 
+import weka.classifiers.trees.j48.Distribution;
 import weka.core.Instances;
 
 /**
@@ -33,8 +34,21 @@ public interface DataAttribute {
 	 * ----------------------------------------------------------------------------------------------------------------------------------------------
 	 * @param dataEntropy Overall entropy of the dataset
 	 * @param classPriors priors of each of the classes
-	 * @return Independent Information Gain of the current attribute
 	 */
-	double getCurrentAttributeIIG(double dataEntropy, double [] classPriors);
+	void calculateCurrentAttributeIIG(double dataEntropy, double [] classPriors);
+	
+	/**
+	 * Below are definitions of general properties of attributes.
+	 */
+	
+	void setDistribution(Distribution distribution);
+	void setAttributeIndex(int index);	
+	int getAttributeIndex();
+	double getAttributeIIG();
+	void setAttributeIIG(double attributeIIG);
+	
+	/**
+	 * 
+	 */
 	
 }

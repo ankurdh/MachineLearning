@@ -6,15 +6,21 @@ import weka.core.Utils;
 public abstract class AbstractDataAttribute implements DataAttribute {
 	private Distribution dataDistribution;
 	private int attributeIndex;
+	private double attributeIIG;
+	
+	public AbstractDataAttribute(){
+		attributeIndex = -1;
+		setAttributeIIG(-1.0);
+	}
 
 	@Override
-	public double getCurrentAttributeIIG(double dataEntropy, double[] classPriors) {
-		if (dataDistribution == null || dataDistribution.actualNumBags() < 2)
-			return 0;
+	public void calculateCurrentAttributeIIG(double dataEntropy, double[] classPriors) {
 
-		double independentInformationGain = (dataEntropy - (getClassAttributeEntropiesPerValue(dataDistribution, classPriors)));
+		if(dataDistribution == null)
+			setAttributeIIG(0.0);
+		else
+			setAttributeIIG(dataEntropy - getClassAttributeEntropiesPerValue(classPriors));
 
-		return independentInformationGain;
 	}
 	
 	/**
@@ -30,7 +36,7 @@ public abstract class AbstractDataAttribute implements DataAttribute {
 	 * @return the second part of the Entropy formula
 	 */
 
-	private double getClassAttributeEntropiesPerValue(Distribution dataDistribution, double[] classPriors) {
+	private double getClassAttributeEntropiesPerValue(double[] classPriors) {
 
 		/**
 		 * The required parameters for the formula and how they're derived:
@@ -40,47 +46,102 @@ public abstract class AbstractDataAttribute implements DataAttribute {
 		 * perClassPerBag() method in the Weka framework.
 		 */
 		
-		double entropySx = 0.0;
-
-		for (int classIndex = 0; classIndex < dataDistribution.numClasses(); classIndex++) {
-
-			double denominator = 0.0;
-
-			for (int bagIndex = 0; bagIndex < dataDistribution.numBags(); bagIndex++) {
-
-				double perBagPerClass = dataDistribution.perClassPerBag(bagIndex, classIndex);
-				double numerator = perBagPerClass * classPriors[classIndex];
-
-				for (int x = 0; x < dataDistribution.numClasses(); x++)
-					denominator += classPriors[x]
-							* dataDistribution.perClassPerBag(bagIndex, x);
-
+		/**
+		 * The entropy of the overall subset of the data that's passed by recursive subdivision
+		 */
+		double entropySx = 0;
+		
+		/**
+		 * This variable models: |Sx|/|S|
+		 */
+		double subsetToDataSizeRatio = 0;
+		
+		/**
+		 * This loop iterates for each of the attribute values for the given attributes. 
+		 */
+		for (int bagIndex = 0; bagIndex < dataDistribution.numBags(); bagIndex++) {
+			/**
+			 * Fix the bug where a distribution bag has no elements in the data falling into it. 
+			 * Can occur because data is recursively subdivided and filtered.
+			 */
+			
+			if (dataDistribution.perBag(bagIndex) == 0)
+				continue;
+			
+			boolean atleastOneClassProbabilityExists = false;
+			
+			/**
+			 * the classProbabilities variable models Ps(Ci)
+			 */
+			double[] classProbabilities = new double[dataDistribution.numClasses()];
+			double entropyDenominator = 0;
+			for (int classIndex = 0; classIndex < dataDistribution.numClasses(); classIndex++) {
 				/**
-				 * pCiXpX is a representative of P(Ci | Xp, X)
+				 * Fixing the bug where the Utils.normalize call failed because of 0 classPriors. This results in a 0 class probability. 
 				 */
+				if (classPriors[classIndex] == 0 || dataDistribution.perClassPerBag(bagIndex, classIndex) == 0)
+					continue;
 				
-				double pCiXpX = numerator / denominator;
-
-				/**
-				 * This is just a summation of entropy. Must still multiply with |Sx|/|S| which is approximated to denomonator.
-				 */
-				entropySx -= pCiXpX;
-
+				classProbabilities[classIndex] = dataDistribution.perClassPerBag(bagIndex, classIndex) * classPriors[classIndex] / (dataDistribution.perClass(classIndex));
+				
+				if(classProbabilities[classIndex] > 0.0)
+					atleastOneClassProbabilityExists = true;
+				
+				entropyDenominator += classProbabilities[classIndex];
+			}
+			
+			try {
+				
+				if(atleastOneClassProbabilityExists)
+					Utils.normalize(classProbabilities);
+				else
+					return 0;
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 
-			entropySx *= denominator;
-
+			double runningEntropy = 0;
+			for (int i = 0; i < dataDistribution.numClasses(); i++) {
+				if (classProbabilities[i] == 0)
+					continue;
+				runningEntropy -= classProbabilities[i] * (Math.log(classProbabilities[i])/Constants.LOG_2);
+			}
+			entropySx += entropyDenominator * runningEntropy;
+			subsetToDataSizeRatio += entropyDenominator;
 		}
-
-		return entropySx;
+		
+		if (subsetToDataSizeRatio == 0 || entropySx == 0) {
+			return 0;
+		}
+		
+//		System.out.println("IIG: " + entropySx/subsetToDataSizeRatio);
+		return entropySx / subsetToDataSizeRatio;		
 
 	}
 
-	protected void setDistribution(Distribution distribution) {
-		dataDistribution = distribution;
+	@Override
+	public void setDistribution(Distribution distribution) {
+		if(distribution != null)
+			dataDistribution = distribution;
 	}
 
-	protected void setIndex(int index) {
+	@Override
+	public void setAttributeIndex(int index) {
 		attributeIndex = index;
+	}
+	
+	@Override
+	public int getAttributeIndex(){
+		return attributeIndex;
+	}
+
+	@Override
+	public double getAttributeIIG() {
+		return attributeIIG;
+	}
+
+	@Override
+	public void setAttributeIIG(double attributeIIG) {
+		this.attributeIIG = attributeIIG;
 	}
 }

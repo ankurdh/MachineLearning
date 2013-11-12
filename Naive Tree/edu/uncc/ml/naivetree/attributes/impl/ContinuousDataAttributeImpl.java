@@ -5,8 +5,8 @@ import java.util.Enumeration;
 import weka.classifiers.trees.j48.Distribution;
 import weka.core.Instance;
 import weka.core.Instances;
-import weka.core.Utils;
 import edu.uncc.ml.naivetree.attributes.AbstractDataAttribute;
+import edu.uncc.ml.naivetree.attributes.Constants;
 import edu.uncc.ml.naivetree.attributes.ContinuousDataAttribute;
 
 public class ContinuousDataAttributeImpl extends AbstractDataAttribute implements ContinuousDataAttribute {
@@ -14,25 +14,25 @@ public class ContinuousDataAttributeImpl extends AbstractDataAttribute implement
 	private double [] binCutoffs;
 	
 	public ContinuousDataAttributeImpl(Instances data, int attributeIndex){
-		
-		super.setIndex(attributeIndex);
-		
+		super();
+		super.setAttributeIndex(attributeIndex);
 		initializeAttribute(data, attributeIndex);
 	}
 	
 	@Override
 	public void initializeAttribute(Instances data, int attributeIndex) {
-		int bin = (int) Utils.log2(data.numInstances());
-		
-		super.setDistribution(calculateCutPointsForBins(data, attributeIndex, bin));
-
+		int binsToBeCreated = (int) (Math.log(data.numInstances())/Constants.LOG_2);
+		super.setDistribution(getDistsributionFor(data, attributeIndex, binsToBeCreated));
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Distribution calculateCutPointsForBins(Instances instances, int attributeIndex, int bins) {
+	public Distribution getDistsributionFor(Instances instances, int attributeIndex, int bins) {
 		
-		setupCutPointsByEqualWidths(instances, attributeIndex, bins);
+		calculateCutPointsByEqualWidthBins(instances, attributeIndex, bins);
+		
+		if(binCutoffs == null)
+			return null;
 		
 		Instance currentInstance;
 		Distribution distribution = new Distribution(binCutoffs.length + 1, instances.numClasses());
@@ -47,7 +47,7 @@ public class ContinuousDataAttributeImpl extends AbstractDataAttribute implement
 			currentInstance = (Instance) instanceList.nextElement();
 			try {
 				if (!currentInstance.isMissing(attributeIndex))
-					distribution.add(getBinIndex(currentInstance, attributeIndex), currentInstance);
+					distribution.add(getBelongingBinIndex(currentInstance, attributeIndex), currentInstance);
 				else {
 					distribution.addWeights(currentInstance, bagWeights);
 				}
@@ -60,7 +60,7 @@ public class ContinuousDataAttributeImpl extends AbstractDataAttribute implement
 		return distribution;
 	}
 	
-	private int getBinIndex(Instance currentInstance, int attributeIndex) {
+	private int getBelongingBinIndex(Instance currentInstance, int attributeIndex) {
 		
 		if (currentInstance.value(attributeIndex) <= binCutoffs[0])
 			return 0;
@@ -95,34 +95,36 @@ public class ContinuousDataAttributeImpl extends AbstractDataAttribute implement
 	 * @param attributeIndex
 	 * @param bins
 	 */
-	private void setupCutPointsByEqualWidths(Instances data, int attributeIndex, int bins){
-		double maximum = 0;
-		double minimum = 1;
+	private void calculateCutPointsByEqualWidthBins(Instances data, int attributeIndex, int bins){
+		double distributionMaximum = 0;
+		double distributionMinimum = 1;
 
 		Instance currentInstance;
 		for (int i = 0; i < data.numInstances(); i++) {
 			currentInstance = data.instance(i);
 			if (!currentInstance.isMissing(attributeIndex)) {
-				double currentVal = currentInstance.value(attributeIndex);
-				if (maximum < minimum) {
-					maximum = minimum = currentVal;
+				double currentFeatureValue = currentInstance.value(attributeIndex);
+				if (distributionMaximum < distributionMinimum) {
+					distributionMaximum = distributionMinimum = currentFeatureValue;
 				}
-				else if (currentVal > maximum) {
-					maximum = currentVal;
+				else if (currentFeatureValue > distributionMaximum) {
+					distributionMaximum = currentFeatureValue;
 				}
-				else if (currentVal < minimum) {
-					minimum = currentVal;
+				else if (currentFeatureValue < distributionMinimum) {
+					distributionMinimum = currentFeatureValue;
 				}
 			}
 		}
 
-		double binWidth = (maximum - minimum) / bins;
+		double binSize = (distributionMaximum - distributionMinimum) / bins;
 		
-		if ((bins > 1) && (binWidth > 0)) {
+		if ((bins > 1) && (binSize > 0)) {
 			binCutoffs = new double[bins - 1];
 			for (int i = 1; i < bins; i++) {
-				binCutoffs[i - 1] = minimum + binWidth * i;
+				binCutoffs[i - 1] = distributionMinimum + binSize * i;
 			}
+		} else {
+			System.out.println("No Bins");
 		}
 	}
 }

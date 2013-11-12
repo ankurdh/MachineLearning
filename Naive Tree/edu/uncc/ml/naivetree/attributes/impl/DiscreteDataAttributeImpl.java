@@ -11,7 +11,8 @@ import edu.uncc.ml.naivetree.attributes.DiscreteDataAttribute;
 public class DiscreteDataAttributeImpl extends AbstractDataAttribute implements DiscreteDataAttribute {
 
 	public DiscreteDataAttributeImpl(Instances data, int attributeIndex){
-		super.setIndex(attributeIndex);
+		super();
+		super.setAttributeIndex(attributeIndex);
 		
 		initializeAttribute(data, attributeIndex);
 		
