@@ -13,7 +13,6 @@ import edu.uncc.ml.naivetree.attributes.impl.DiscreteDataAttributeImpl;
 public class NaiveTreeClassifier extends ClassifierTree {
 
 	private static final long serialVersionUID = 1L;
-	private DataAttribute [] attributes;
 
 	public NaiveTreeClassifier() {
 		super(null);
@@ -29,6 +28,11 @@ public class NaiveTreeClassifier extends ClassifierTree {
 		data.deleteWithMissingClass();
 		
 		/**
+		 * This method initializes the attributes. Populates the required tables before the tree construction according to the paper. 
+		 */
+		initializeAttributes(data);
+		
+		/**
 		 * Override and invoke the build tree method of the ClassifierTree class
 		 */
 		buildTree(data, true);
@@ -36,7 +40,7 @@ public class NaiveTreeClassifier extends ClassifierTree {
 	}
 	
 	private void initializeAttributes(Instances instances){
-		attributes = AttributeHelper.initializeAttributes(instances, attributes);
+		AttributeHelper.initializeAttributes(instances);
 	}
 	
 	/**
@@ -48,49 +52,55 @@ public class NaiveTreeClassifier extends ClassifierTree {
 		m_localModel = new NoSplit(new Distribution(data));
 		
 		/**
-		 * This method initializes the attributes. Populates the required tables before the tree construction according to the paper. 
+		 * Calculate the Attribute entropies and IIGs here. 
 		 */
-		initializeAttributes(data);
+		
+		AttributeHelper.calculateAttributeEntropies(data);
 		
 		/**
 		 * m_localModel is the variable which has to be set. This is the one which will have the split. 
 		 */
 		int splitAttributeIndex = -1;
+		boolean subTreeConstructionPossible = false;
 		
 		while(true){
 
-			splitAttributeIndex = getAttributeIndexWithMaxIIGFromData(data);
+			splitAttributeIndex = AttributeHelper.getAttributeIndexWithMaxIIGFromData(data);
 			if(splitAttributeIndex == -1)
 				break;
 			
-			System.out.println("Best IIG Attribute: " + splitAttributeIndex);
+			System.out.println("\nBest IIG Attribute: " + splitAttributeIndex);
 			
 			C45Split currentNodeSplit = new C45Split(splitAttributeIndex, 2, new Distribution(data).total());
 			currentNodeSplit.buildClassifier(data);
 
-			//remove the current attribute for the children. so that they don't consider it.
-			if(data.attribute(splitAttributeIndex).isNominal())
-				attributes[splitAttributeIndex] = new DiscreteDataAttributeImpl(data, splitAttributeIndex);
-			else if(data.attribute(splitAttributeIndex).isNumeric())
-				attributes[splitAttributeIndex] = new ContinuousDataAttributeImpl(data, splitAttributeIndex);
+			/**
+			 * remove the current attribute for the children. so that they don't consider it.
+			 */
+			if(data.attribute(splitAttributeIndex).isNominal()){
+				DataAttribute newAttribute = new DiscreteDataAttributeImpl(data, splitAttributeIndex);
+				newAttribute.setDeleted(true);
+				AttributeHelper.setAttributeValue(splitAttributeIndex, newAttribute);
+			}
+			else if(data.attribute(splitAttributeIndex).isNumeric()) {
+				DataAttribute newAttribute = new ContinuousDataAttributeImpl(data, splitAttributeIndex);
+				newAttribute.setDeleted(true);
+				AttributeHelper.setAttributeValue(splitAttributeIndex, newAttribute);
+			}
+			
+			System.out.println("Current Node children: " + currentNodeSplit.numSubsets());
 			
 			if(currentNodeSplit.numSubsets() > 1){
 				m_localModel = currentNodeSplit;
+				subTreeConstructionPossible = true;
 				break;
 			}
-			
-			System.out.println("Best Att: " + splitAttributeIndex);
-			
 		}
-		
-		System.out.println("Current Node children: " + m_localModel.numSubsets());
 		
 		/**
 		 * Build the subtrees now. If the currentNodeSplit.numSubsets == 1, then this is a leaf node
 		 */
-		if(m_localModel.numSubsets() < 1)
-			m_isLeaf = true;
-		else {
+		if(subTreeConstructionPossible) {
 			
 			//There are going to be #currentNodeSplit.numSubsets() subtrees for this node. Construct each of them.
 			//Create data subsets for each split
@@ -99,53 +109,19 @@ public class NaiveTreeClassifier extends ClassifierTree {
 			
 			for(int i = 0; i < m_localModel.numSubsets(); i ++){
 				NaiveTreeClassifier newSubTree = new NaiveTreeClassifier();
-				newSubTree.buildTree(subtreeSplitData[i++], true);
+				newSubTree.buildTree(subtreeSplitData[i], true);
 				
 				m_sons[i] = newSubTree;
 			}
 			
 			System.out.println("Constructed Subtrees.");
 			
+		} else {
+			//there has to be just one possible split. Mark this as the leaf.
+			m_isLeaf = true;
 		}
 		
-		//TODO remove this once all the required implementation is completed
-//		throw new Exception("Not implemented yet");
+		System.out.println("\nRecursing Back..");
 		
-	}
-	
-	private int getAttributeIndexWithMaxIIGFromData(Instances data){
-
-		/**
-		 * Trigger attribute Independent Information Gain calculation here. 
-		 * The data for the following call will recursively reduce. Update the attribute entropies with respect to new data everytime.
-		 */
-		AttributeHelper.calculateAttributeEntropies(data, attributes);
-		
-		/**
-		 * Now we have attribute IIGs. Iterate over all attributes and return the one with maximum IIG.
-		 */
-		double currentMaxIIG = 0;
-		int maxAttributeIndex = -1;
-		
-		for(int attributeIndex = 0 ; attributeIndex < data.numAttributes(); attributeIndex++){
-			
-			if(attributeIndex == data.classIndex())
-				continue;
-			
-			/**
-			 * Attributes might not have any data entries qualifying them. This bug occurred when the attribute impurity is 0.  
-			 */
-			
-			if(attributes[attributeIndex].getAttributeIIG() == -1.0)
-				continue;
-			
-			if(attributes[attributeIndex].getAttributeIIG() > currentMaxIIG){
-				currentMaxIIG = attributes[attributeIndex].getAttributeIIG();
-				maxAttributeIndex = attributeIndex;
-			}
-		}
-		
-		return maxAttributeIndex;
-	}
-	
+	}	
 }

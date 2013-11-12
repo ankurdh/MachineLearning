@@ -47,8 +47,7 @@ public interface DataAttribute {
 	double getAttributeIIG();
 	void setAttributeIIG(double attributeIIG);
 	
-	/**
-	 * 
-	 */
+	void setDeleted(boolean isDeleted);
+	boolean isAttributeDeleted();
 	
 }

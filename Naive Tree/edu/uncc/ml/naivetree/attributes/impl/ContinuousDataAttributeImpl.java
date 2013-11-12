@@ -77,9 +77,6 @@ public class ContinuousDataAttributeImpl extends AbstractDataAttribute implement
 			}
 		}
 		
-		if (index == -1)
-			index = -1;
-		
 		return index;
 	}
 

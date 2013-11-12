@@ -8,15 +8,19 @@ public abstract class AbstractDataAttribute implements DataAttribute {
 	private int attributeIndex;
 	private double attributeIIG;
 	
+	private boolean isDeleted;
+	
 	public AbstractDataAttribute(){
 		attributeIndex = -1;
 		setAttributeIIG(-1.0);
+		
+		isDeleted = false;
 	}
 
 	@Override
 	public void calculateCurrentAttributeIIG(double dataEntropy, double[] classPriors) {
 
-		if(dataDistribution == null)
+		if(dataDistribution == null || isDeleted)
 			setAttributeIIG(0.0);
 		else
 			setAttributeIIG(dataEntropy - getClassAttributeEntropiesPerValue(classPriors));
@@ -143,5 +147,15 @@ public abstract class AbstractDataAttribute implements DataAttribute {
 	@Override
 	public void setAttributeIIG(double attributeIIG) {
 		this.attributeIIG = attributeIIG;
+	}
+	
+	@Override
+	public void setDeleted(boolean b){
+		isDeleted = b;
+	}
+	
+	@Override
+	public boolean isAttributeDeleted(){
+		return isDeleted;
 	}
 }

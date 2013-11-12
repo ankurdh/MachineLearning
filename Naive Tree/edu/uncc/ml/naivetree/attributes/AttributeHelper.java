@@ -7,7 +7,13 @@ import edu.uncc.ml.naivetree.attributes.impl.DiscreteDataAttributeImpl;
 
 public class AttributeHelper {
 
-	public static DataAttribute[] initializeAttributes(Instances data, DataAttribute[] attributes) {
+	private static DataAttribute [] attributes;
+	
+	public DataAttribute [] getAttributes(){
+		return attributes;
+	}
+	
+	public static DataAttribute[] initializeAttributes(Instances data) {
 		//initialize the attributes array first. Since one value in the attributes is the class, 
 		//create an array of size: noOfAttributes - 1
 		if(attributes == null)
@@ -31,7 +37,7 @@ public class AttributeHelper {
 	 * of the parent nodes, new class probabilities are calculated everytime the method is executed. 
 	 * @param data
 	 */
-	public static void calculateAttributeEntropies(Instances data, DataAttribute [] attributes) {
+	public static void calculateAttributeEntropies(Instances data) {
 		try {
 			Distribution distribution = new Distribution(data);
 			double entropyOfWholeData = 0.0;
@@ -46,6 +52,10 @@ public class AttributeHelper {
 				 * We don't have to explicitly check for all the attributes obeying the conditions in Xp because the 
 				 * data passed is already run through the tree through all the parent nodes and the Xp attributes have been satisfied.
 				 */
+				//ensure there is atleast one feature for the current class:
+				if(distribution.perClass(classIndex) == 0)
+					continue;
+				
 				classPriors[classIndex] = distribution.perClass(classIndex)/data.numInstances();
 				
 				entropyOfWholeData -= classPriors[classIndex] * (Math.log(classPriors[classIndex])/Constants.LOG_2);
@@ -61,8 +71,44 @@ public class AttributeHelper {
 				attributes[attributeIndex].calculateCurrentAttributeIIG(entropyOfWholeData, classPriors);
 			}
 			
+			for(int i = 0 ; i < attributes.length; i ++)
+				System.out.print(attributes[i].getAttributeIIG() + " ");
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static int getAttributeIndexWithMaxIIGFromData(Instances data){
+		
+		/**
+		 * Now we have attribute IIGs. Iterate over all attributes and return the one with maximum IIG.
+		 */
+		double currentMaxIIG = 0;
+		int maxAttributeIndex = -1;
+		
+		for(int attributeIndex = 0 ; attributeIndex < data.numAttributes(); attributeIndex++){
+			
+			if(attributeIndex == data.classIndex())
+				continue;
+			
+			/**
+			 * Attributes might not have any data entries qualifying them. This bug occurred when the attribute impurity is 0.  
+			 */
+			
+			if(attributes[attributeIndex].isAttributeDeleted() || attributes[attributeIndex].getAttributeIIG() == -1.0)
+				continue;
+			
+			if(attributes[attributeIndex].getAttributeIIG() > currentMaxIIG){
+				currentMaxIIG = attributes[attributeIndex].getAttributeIIG();
+				maxAttributeIndex = attributeIndex;
+			}
+		}
+		
+		return maxAttributeIndex;
+	}
+
+	public static void setAttributeValue(int attributeIndex, DataAttribute newAttribute) {
+		attributes[attributeIndex] = newAttribute;
 	}
 }
