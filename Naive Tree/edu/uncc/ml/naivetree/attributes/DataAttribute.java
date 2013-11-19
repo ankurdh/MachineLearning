@@ -32,10 +32,16 @@ public interface DataAttribute {
 	 * ----------------------------------------------------------------------------------------------------------------------------------------------
 	 * 								IIG(S, X) = Entropy(S) - SUM_OVER_ALL_ATTRIBUTE_VALUES [|Sx|/|S| * Entropy(Sx)]
 	 * ----------------------------------------------------------------------------------------------------------------------------------------------
-	 * @param dataEntropy Overall entropy of the dataset
+	 * @param overallDataEntropy Overall entropy of the dataset
 	 * @param classPriors priors of each of the classes
 	 */
-	void calculateCurrentAttributeIIG(double dataEntropy, double [] classPriors);
+	void calculateCurrentAttributeIIG(double overallDataEntropy, double [] classPriors);
+	
+	/**
+	 * In case of missing attributes, generate an array of doubles and use that to replace missing attribute
+	 * values. 
+	 */
+	double[] getMissingAttributeDoubles(Instances instances, int distributionbags);
 	
 	/**
 	 * Below are definitions of general properties of attributes.

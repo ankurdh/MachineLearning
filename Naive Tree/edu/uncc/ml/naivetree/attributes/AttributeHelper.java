@@ -5,6 +5,16 @@ import weka.core.Instances;
 import edu.uncc.ml.naivetree.attributes.impl.ContinuousDataAttributeImpl;
 import edu.uncc.ml.naivetree.attributes.impl.DiscreteDataAttributeImpl;
 
+/**
+ * The AttributeHelper class models the attributes of the given dataset. The class has an array of
+ * attributes defined as the interface DataAttribute. 
+ * 
+ * Attributes have to be initialized just once for the whole tree construction and thus have
+ * been declared as a private static instance in the class. 
+ * 
+ * @author Ankur
+ *
+ */
 public class AttributeHelper {
 
 	private static DataAttribute [] attributes;
@@ -14,8 +24,11 @@ public class AttributeHelper {
 	}
 	
 	public static DataAttribute[] initializeAttributes(Instances data) {
-		//initialize the attributes array first. Since one value in the attributes is the class, 
-		//create an array of size: noOfAttributes - 1
+		/**
+		 * initialize the attributes array first.
+		 * Since one value in the attributes is the class create an array of size: noOfAttributes - 1 
+		 */
+		
 		if(attributes == null)
 			attributes = new DataAttribute[data.numAttributes() - 1];
 		
@@ -33,9 +46,10 @@ public class AttributeHelper {
 	}
 
 	/**
-	 * This method first calculates the value: P(Ci | Xp) for each of the classes. Since the data is recursively subdivided based on the conditions
-	 * of the parent nodes, new class probabilities are calculated everytime the method is executed. 
-	 * @param data
+	 * This method first calculates the value: P(Ci | Xp) for each of the classes. Since the data is recursively 
+	 * subdivided based on the conditions of the parent nodes, new class probabilities are calculated everytime 
+	 * the method is executed. 
+	 * @param data recursively subdivided data
 	 */
 	public static void calculateAttributeEntropies(Instances data) {
 		try {
@@ -61,18 +75,19 @@ public class AttributeHelper {
 				entropyOfWholeData -= classPriors[classIndex] * (Math.log(classPriors[classIndex])/Constants.LOG_2);
 				
 			}
-			System.out.println("Entropy of whole data: " + entropyOfWholeData);
+//			System.out.println("Entropy of whole data: " + entropyOfWholeData);
 			
 			for(int attributeIndex = 0 ; attributeIndex < data.numAttributes(); attributeIndex ++){
-				//omit the class index
+//				//omit the class index
 				if(attributeIndex == data.classIndex())
 					continue;
 				
 				attributes[attributeIndex].calculateCurrentAttributeIIG(entropyOfWholeData, classPriors);
 			}
 			
-			for(int i = 0 ; i < attributes.length; i ++)
-				System.out.print(attributes[i].getAttributeIIG() + " ");
+			//TODO the below loop has to be removed once the entropies are getting calculated properly.
+//			for(int i = 0 ; i < attributes.length; i ++)
+//				System.out.print(attributes[i].getAttributeIIG() + " ");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -110,5 +125,9 @@ public class AttributeHelper {
 
 	public static void setAttributeValue(int attributeIndex, DataAttribute newAttribute) {
 		attributes[attributeIndex] = newAttribute;
+	}
+
+	public static void markAttributeDeleteStatus(int attributeIndex, boolean deleteStatus) {
+		attributes[attributeIndex].setDeleted(deleteStatus);
 	}
 }

@@ -11,11 +11,8 @@ import edu.uncc.ml.naivetree.attributes.DiscreteDataAttribute;
 public class DiscreteDataAttributeImpl extends AbstractDataAttribute implements DiscreteDataAttribute {
 
 	public DiscreteDataAttributeImpl(Instances data, int attributeIndex){
-		super();
 		super.setAttributeIndex(attributeIndex);
-		
 		initializeAttribute(data, attributeIndex);
-		
 	}
 	
 	@Override
@@ -26,25 +23,21 @@ public class DiscreteDataAttributeImpl extends AbstractDataAttribute implements 
 	@SuppressWarnings("unchecked")
 	@Override
 	public Distribution calculateDistributionForDiscreteBags(Instances instances, int attributeIndex) {
-		Instance instance;
+		Instance currentInstance;
 
 		Distribution distribution = new Distribution(instances.attribute(attributeIndex).numValues(), instances.numClasses());
 
 		// Only Instances with known values are relevant.
 		Enumeration<Instance> enu = instances.enumerateInstances();
-		
-		double[] bagWeights = new double[distribution.numBags()];
-		for (int i = 0; i < distribution.numBags(); i++)
-			bagWeights[i] = 1.0 / distribution.numBags();
+		double [] missingAttributeDoubles = getMissingAttributeDoubles(instances, distribution.numBags());
 		
 		while (enu.hasMoreElements()) {
-			instance = enu.nextElement();
+			currentInstance = enu.nextElement();
 			try {
-				if (!instance.isMissing(attributeIndex))
-					distribution.add((int) instance.value(attributeIndex), instance);
-				else {
-					distribution.addWeights(instance, bagWeights);
-				}
+				if(currentInstance.isMissing(attributeIndex))
+					currentInstance.replaceMissingValues(missingAttributeDoubles);
+				
+				distribution.add((int) currentInstance.value(attributeIndex), currentInstance);
 			} catch (Exception e){
 				e.printStackTrace();
 				return null;
@@ -53,5 +46,4 @@ public class DiscreteDataAttributeImpl extends AbstractDataAttribute implements 
 
 		return distribution;
 	}
-
 }
